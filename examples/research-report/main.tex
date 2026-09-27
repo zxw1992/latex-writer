@@ -1,0 +1,81 @@
+\documentclass[UTF8,a4paper,11pt,fontset=fandol]{ctexart}
+\usepackage[margin=24mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{graphicx,booktabs,tabularx,longtable,multirow,array,siunitx}
+\usepackage[table]{xcolor}
+\usepackage{tikz,pgfplots,caption,fancyhdr,enumitem}
+\usetikzlibrary{arrows.meta,positioning,calc,matrix}
+\pgfplotsset{compat=1.18}
+\definecolor{ink}{HTML}{17364D}
+\definecolor{accent}{HTML}{007F82}
+\definecolor{pale}{HTML}{EAF5F4}
+\usepackage[colorlinks,linkcolor=ink,urlcolor=accent,citecolor=accent]{hyperref}
+\captionsetup{hypcap=false}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily LaTeX 实际场景展示}\fancyhead[R]{\small 2026.09}\fancyfoot[C]{\thepage}
+\ctexset{section/format=\Large\bfseries\color{ink},subsection/format=\large\bfseries\color{ink}}
+\setlist{nosep,leftmargin=2em}\setlength{\parskip}{4pt}
+\newcommand{\brief}[1]{\begin{quote}\small\color{ink}#1\end{quote}}
+\newcommand{\hlmath}[1]{\colorbox{orange!22}{$\displaystyle #1$}}
+\newcommand{\tagline}[1]{{\small\sffamily\color{accent}#1}\par\medskip}
+\newtheorem{proposition}{命题}
+\renewcommand{\proofname}{证明}
+
+\title{把零散研究想法变成可交流的技术报告}
+\author{LaTeX 助手 · 场景样稿}
+\date{}
+\begin{document}
+\thispagestyle{fancy}\vspace*{3mm}\begin{center}{\LARGE\bfseries\color{ink}把零散研究想法变成可交流的技术报告}\par\vspace{4mm}{\small LaTeX 助手 · 场景样稿}\end{center}\vspace{3mm}
+
+\tagline{案例 01 · 中文正文 / English abstract / 引用 / 方法图 / 可维护结构}
+\begin{abstract}
+当观测有噪声且设计矩阵的列近似相关时，最小二乘的系数可能对数据扰动敏感。本报告围绕岭回归组织一个可执行的研究方案，区分目标函数、求解步骤和验证计划。文中的曲线与数值是明确标注的排版演示数据，不构成实证研究结论。
+\end{abstract}
+\begin{center}\textbf{Abstract}\end{center}
+\noindent This note turns an informal idea about noisy regression into a structured research plan. It specifies the objective, a reproducible fitting protocol, and the evidence needed to assess stability. All displayed numerical results are illustrative.
+\section{研究问题与假设}
+研究问题是：在存在相关特征的情况下，加入二次惩罚能否降低系数对训练样本扰动的敏感性，同时保持可接受的预测误差？这里的“稳定性”需要通过重复采样测量，不能仅凭一条更平滑的曲线判断。
+
+本报告采用凸优化语言描述目标；相关基础可参见 Boyd 与 Vandenberghe 的教材\cite{boyd2004}。该引用提供理论背景，并不为本报告的演示数据背书。
+\subsection{符号与数据边界}
+设 $X\in\mathbb R^{n\times d}$，$y\in\mathbb R^n$，$w\in\mathbb R^d$。特征中心化和标准化只在训练集上拟合，再应用于验证集；截距单独处理，不参与惩罚。令
+\begin{equation}
+ J_\lambda(w)=\frac{1}{2n}\lVert Xw-y\rVert_2^2+\frac{\lambda}{2}\lVert w\rVert_2^2,\qquad\lambda>0.\label{eq:objective}
+\end{equation}
+\subsection{为何需要这个约束}
+若两个特征近似相同，预测值可以变化不大而系数发生明显变化。式\eqref{eq:objective}通过惩罚过大的系数限制这种自由度，但也可能引入偏差；应当用验证集选择 $\lambda$，再用独立测试集报告最终结果。
+\begin{center}
+\begin{tikzpicture}[node distance=8mm,box/.style={draw=accent,fill=pale,rounded corners,text width=28mm,minimum height=13mm,align=center},>=Stealth]
+\node[box](a){划分数据\\锁定测试集};\node[box,right=of a](b){训练集拟合\\预处理参数};\node[box,right=of b](c){验证集选择\\正则化强度};\node[box,right=of c](d){最终测试\\记录不确定性};
+\draw[->](a)--(b);\draw[->](b)--(c);\draw[->](c)--(d);
+\end{tikzpicture}
+\captionof{figure}{研究流程：先隔离测试数据，再选择模型。}\label{fig:protocol}
+\end{center}
+\clearpage
+\section{方法、实现与结果呈现}
+对式\eqref{eq:objective}求导并令梯度为零，得到
+\begin{align}
+ \nabla J_\lambda(w)&=\frac1n X^\top(Xw-y)+\lambda w,\\
+ (X^\top X+n\lambda I)\widehat w&=X^\top y.\label{eq:normal}
+\end{align}
+实现时求解式\eqref{eq:normal}的线性方程组，不显式构造矩阵逆。模型选择所需的信息整理在表\ref{tab:plan}中。
+\begin{center}
+\captionof{table}{实验记录应包含的内容}\label{tab:plan}
+\begin{tabularx}{\linewidth}{@{}lXl@{}}\toprule
+条目 & 需要记录的原因 & 建议记录值\\\midrule
+数据划分 & 避免不同模型使用不同测试样本 & 样本 ID 与随机种子\\
+预处理 & 防止验证数据影响均值与方差 & 训练集统计量\\
+正则化强度 & 便于重跑并检查选择过程 & 完整候选网格\\
+重复实验 & 展示结果波动而非只选最好一次 & 每次运行的结果\\\bottomrule
+\end{tabularx}
+\end{center}
+\begin{center}
+\begin{tikzpicture}\begin{axis}[width=.83\linewidth,height=58mm,xmode=log,xlabel={正则化强度 $\lambda$},ylabel={验证误差（演示值）},grid=major,legend style={at={(.5,1.02)},anchor=south,draw=none},tick label style={font=\small}]
+\addplot[accent,thick,mark=*] coordinates{(.001,.82)(.01,.61)(.1,.44)(1,.52)(10,.91)};\addlegendentry{示意性验证曲线}
+\end{axis}\end{tikzpicture}
+\captionof{figure}{仅展示对数坐标、数学轴标签和矢量曲线排版；数据未由真实实验产生。}
+\end{center}
+\section{结果应如何解释}
+上图用于确定结果呈现方式，不能据此断言正则化有效。正式实验至少要同时检查预测误差、系数波动和训练／测试分布差异。若更强的惩罚降低波动却增加预测误差，就需要说明实际任务更重视哪一种代价。
+\bibliographystyle{plain}\bibliography{refs}
+
+\end{document}
