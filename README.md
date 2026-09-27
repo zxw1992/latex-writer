@@ -68,7 +68,7 @@
 
 将仓库克隆或下载到临时目录，读取此 README，复制 **`skills/latex-writer/` 的完整内容**，保留 `references/`、`evals/` 和 `LICENSE`。不要只下载 `SKILL.md`，也不要把仓库根目录当作技能目录。`docs/` 和 `examples/` 用于展示，不必安装。
 
-Codex 有可用的 `$skill-installer` 时，优先使用它，传入仓库 `zxw1992/latex-writer` 和路径 `skills/latex-writer`，由它管理目标位置。不要同时向多个目录重复安装。
+Codex 有可用的 `$skill-installer` 时，优先使用它，传入仓库 `zxw1992/latex-writer` 和路径 `skills/latex-writer`，由它管理目标位置。不要同时向多个目录重复安装。下载遇到本机 Python 证书链错误时，可改用安装器的 `--method git` 或 Git 克隆；不要关闭 TLS 验证。
 
 ### 2. 选择当前客户端支持的位置
 

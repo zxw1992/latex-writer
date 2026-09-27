@@ -14,3 +14,9 @@ The release preserves the original `SKILL.md` and all eleven reference files byt
 - The standalone skill-creator validator could not start because its Python environment lacks PyYAML; metadata and reference validation above was performed by the regression runner instead.
 
 This record does not establish client discovery, a model success rate, or a skill-versus-no-skill improvement. Installation checks are recorded below after fetching the published files.
+
+## Published installation check
+
+The published skill at commit `08a56d70a4dd7d15a1f98372b9275de21d874688` was fetched from GitHub using the Codex skill-installer with `--method git` into an isolated temporary destination. All 18 installed files matched the release source by SHA-256; installed frontmatter, reference paths and behavioral inputs validated successfully. The installer’s direct-download attempt failed because this machine’s Python environment could not verify its TLS certificate chain; Git transport succeeded without disabling certificate verification.
+
+This confirms download and file installation, not automatic discovery or model invocation in a fresh client session. No existing personal skill installation was changed.
