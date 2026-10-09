@@ -40,7 +40,7 @@ These are direct renders of a previously compiled and revised example, not a one
 
 ## Installation instructions for agents
 
-1. Fetch `https://github.com/zxw1992/latex-writer`, using `main` unless the user specifies a tag or commit. Install the complete **`skills/latex-writer/`** directory, including `references/`, `evals/`, and `LICENSE`. Do not install the repository root or only `SKILL.md`. Showcase files under `docs/` and `examples/` are not required.
+1. Fetch `https://github.com/zxw1992/latex-writer`, using `main` unless the user specifies a tag or commit. Install the complete **`skills/latex-writer/`** directory, including `SKILL.md`, `references/`, and `LICENSE`. Do not install the repository root or only `SKILL.md`. Showcase files under `docs/` and `examples/` are not required.
 2. In Codex, prefer the available `$skill-installer`, with repository `zxw1992/latex-writer` and path `skills/latex-writer`; let it manage the destination. For manual installation, use `~/.agents/skills/latex-writer/` for Codex or `~/.claude/skills/latex-writer/` for Claude Code. For a user-requested project installation, use the corresponding `.agents/skills/` or `.claude/skills/` directory in the project. For other hosts, check their documentation. Do not install duplicate copies across locations. If direct download fails due to a local Python certificate-chain issue, use the installer’s `--method git` or clone with Git; do not disable TLS verification.
 3. Inspect an existing target, including symlinks. Skip identical content. Before updating differing files, preserve the old copy outside skill-discovery directories so local edits are recoverable and backups do not appear as duplicate skills. Follow the host's permission flow.
 4. Verify `SKILL.md`, its `name: latex-writer`, its nonempty description, and all referenced files. Compare installed files with the downloaded source. Report the path and installed commit/tag. Check the host's skill list when available; distinguish file installation from confirmed discovery. Reload or restart if necessary.
@@ -54,19 +54,9 @@ Installing the skill requires neither TeX nor an API key. Model access is manage
 
 Do not install a full TeX distribution merely because the user requested this skill. Report unavailable tools and unverified output honestly.
 
-## Development
+## Issue reports
 
-```bash
-python3 skills/latex-writer/evals/run_regressions.py
-```
-
-The script validates metadata, reference paths, evaluation inputs, example compilation and expected errors. It requires Python 3, PyYAML or Ruby/Psych, and the relevant TeX tools. Missing tools are recorded as skipped. Output goes to a temporary directory unless a new directory is supplied with `--output`.
-
-[Release verification](docs/verification.md): 18 checks passed; one failed because the local Biber executable could not start.
-
-The public suite contains eight behavioral cases. A historical handwritten-image case is excluded because redistribution permission for its source image has not been established. Image transcription remains part of the skill; no public multimodal evaluation result is claimed. This script does not run model comparisons, and rendered pages still require visual inspection.
-
-When reporting issues, include a minimal reproduction, host, engine and relevant logs, with personal information removed. Run regressions after changing reference examples or verification code.
+When reporting issues, include a minimal reproduction, host, engine and relevant logs, with personal information removed. Generated pages still need visual inspection; the public example does not guarantee successful compilation in every environment.
 
 ## License
 

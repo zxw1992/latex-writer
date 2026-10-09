@@ -66,7 +66,7 @@
 - 技能路径：`skills/latex-writer/`
 - 技能名：`latex-writer`
 
-将仓库克隆或下载到临时目录，读取此 README，复制 **`skills/latex-writer/` 的完整内容**，保留 `references/`、`evals/` 和 `LICENSE`。不要只下载 `SKILL.md`，也不要把仓库根目录当作技能目录。`docs/` 和 `examples/` 用于展示，不必安装。
+将仓库克隆或下载到临时目录，读取此 README，复制 **`skills/latex-writer/` 的完整内容**，保留 `SKILL.md`、`references/` 和 `LICENSE`。不要只下载 `SKILL.md`，也不要把仓库根目录当作技能目录。`docs/` 和 `examples/` 用于展示，不必安装。
 
 Codex 有可用的 `$skill-installer` 时，优先使用它，传入仓库 `zxw1992/latex-writer` 和路径 `skills/latex-writer`，由它管理目标位置。不要同时向多个目录重复安装。下载遇到本机 Python 证书链错误时，可改用安装器的 `--method git` 或 Git 克隆；不要关闭 TLS 验证。
 
@@ -106,19 +106,9 @@ Codex 有可用的 `$skill-installer` 时，优先使用它，传入仓库 `zxw1
 
 缺少工具时应说明未验证项，不能把生成源码等同于编译成功。**不要因为用户只要求安装 skill，就自动安装整套 TeX 发行版。** 用户也可以把源码放到自己的 LaTeX 环境中编译。
 
-## 开发与验证
+## 问题反馈
 
-```bash
-python3 skills/latex-writer/evals/run_regressions.py
-```
-
-此命令检查技能元数据、引用路径、评测输入、参考示例编译及预期报错。需要 Python 3、PyYAML 或 Ruby/Psych，以及相应 TeX 工具；缺失工具记为跳过。结果写到临时目录，也可用 `--output <新的目录>` 指定位置。
-
-本次发布检查：[验证记录](docs/verification.md)（18 项通过，1 项因本机 Biber 启动错误失败）。
-
-公开版保留 8 个行为评测用例。历史手写图像用例因原图再分发授权未确认而未纳入；图片转写能力仍在技能中，但这里不声称已完成公开版多模态评测。回归脚本不运行模型对照实验，生成的页面还需要视觉检查。
-
-提交问题时请附最小复现、客户端和编译引擎、相关日志，并移除个人信息。改动参考示例或验证脚本后，请运行回归检查。
+提交问题时，请附最小复现、客户端和编译引擎、相关日志，并移除个人信息。生成的页面仍需实际查看；公开示例不代表所有环境都能成功编译。
 
 ## 许可证
 

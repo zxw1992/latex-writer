@@ -260,9 +260,9 @@ or another math-compatible approach for highlighted display formulas; long color
 boxes may need a different layout to stay inside `\linewidth`.
 
 Fix missing or miscolored regions and recheck the affected page. Report any
-uncertainties or deliberately normalized formatting. If the source is clear, do
-not invent a `% TODO` merely to satisfy an evaluation; if it is ambiguous, keep
-the marker next to the affected code and list the issue in the explanation.
+uncertainties or deliberately normalized formatting. Mark only genuine ambiguities
+with `% TODO: verify`; if the source is clear, do not add a marker. Keep each marker
+next to the affected code and list the issue in the explanation.
 
 ---
 
